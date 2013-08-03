@@ -40,7 +40,7 @@ public class TimeSheetIO extends TimeSheet {
 	private static final String USER_HOME = System.getProperty("user.home");
 	private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 	private static final String TEMP_SAVE = USER_HOME + "/Documents/Source Code/TimeSheet/temp.txt";
-	private static String SAVE_LOCATION = USER_HOME + FILE_SEPARATOR + "Documents";
+	private static String SAVE_LOCATION = USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR;
 	
 	/** Checks if the specified file exists by pathname.
 	 * @param fn - The pathname of the file.
@@ -61,6 +61,10 @@ public class TimeSheetIO extends TimeSheet {
 	
 	public static void setSaveLocation(String loc){
 		SAVE_LOCATION = loc;
+	}
+	
+	public static String getSaveLocation(){
+		return SAVE_LOCATION;
 	}
 
 	/** Writes the specified string to the file specified by the pathname.
