@@ -23,8 +23,12 @@ package com.magician.TimeSheet;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
 
 public class TimeSheetIO extends TimeSheet {
 
@@ -41,7 +45,40 @@ public class TimeSheetIO extends TimeSheet {
 	private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 	private static final String TEMP_SAVE = USER_HOME + "/Documents/Source Code/TimeSheet/temp.txt";
 	private static String SAVE_LOCATION = USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR;
+	private static Properties defaultProperties;
+	private static Properties appProperties;
 	
+	public static void loadProperties(){
+		try{
+			defaultProperties.load(TimeSheetIO.class.getResourceAsStream("defaultconfig.properties"));
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+
+	public static void setProperty(String key, String value){
+		appProperties.setProperty(key, value);
+	}
+
+	//TODO remove before deployment, should not be accessible to end user.
+	public static void setDefaultProperties(){
+		defaultProperties = new Properties();
+
+		try{
+			defaultProperties.setProperty("isSet", "yes");
+			defaultProperties.setProperty("userHome", System.getProperty("user.home"));
+			defaultProperties.setProperty("fileSeparator", System.getProperty("file.separator"));
+			defaultProperties.setProperty("saveLocation", USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR);
+
+			defaultProperties.store(new FileOutputStream("defaultconfig.properties"), null);
+		}
+
+		catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+
 	/** Checks if the specified file exists by pathname.
 	 * @param fn - The pathname of the file.
 	 * @return - true if the file exists, false otherwise.
@@ -58,11 +95,11 @@ public class TimeSheetIO extends TimeSheet {
 		}
 		return false;
 	}
-	
+
 	public static void setSaveLocation(String loc){
 		SAVE_LOCATION = loc;
 	}
-	
+
 	public static String getSaveLocation(){
 		return SAVE_LOCATION;
 	}
@@ -137,7 +174,7 @@ public class TimeSheetIO extends TimeSheet {
 
 		return returnValue;
 	}
-	
+
 	/** Reads a textfile and loads the values into a timesheetevent. FOR TESTING PURPOSES ONLY.
 	 * @param sheet - The event to fill with the values from the tempfile.
 	 * @deprecated
@@ -149,7 +186,7 @@ public class TimeSheetIO extends TimeSheet {
 		sheet.setCurrentDay(Integer.parseInt(loadValue(readFromFile(TEMP_SAVE), YEAR, ACTIVITY)));
 		sheet.setActivity((loadValueFromEnd(readFromFile(TEMP_SAVE), ACTIVITY )));
 	}
-	
+
 	/** Loads values from a text file into a TimeSheet. Each separate line in the textfile is used to fill a new TimeSheetEvent.
 	 * @param ts - The TimeSheet to load values into.
 	 * @param loc - The pathname of the file that the values will be loaded from.
@@ -168,7 +205,7 @@ public class TimeSheetIO extends TimeSheet {
 			str = str.substring(str.indexOf(END_OF_LINE) + 1);
 		}
 	}
-	
+
 	public static String loadDates(TimeSheet ts){
 		String s = ts.toString();
 		String result = "";
@@ -178,7 +215,7 @@ public class TimeSheetIO extends TimeSheet {
 		}
 		return result;
 	}
-	
+
 	public static String loadActivities(TimeSheet ts){
 		String s = ts.toString();
 		String result = "";
@@ -188,7 +225,7 @@ public class TimeSheetIO extends TimeSheet {
 		}
 		return result;
 	}
-	
+
 	public static String loadTimesWorked(TimeSheet ts){
 		String s = ts.toString();
 		String result = "";
@@ -198,7 +235,7 @@ public class TimeSheetIO extends TimeSheet {
 		}
 		return result;
 	}
-	
+
 	public static String loadAndFormatForExport(TimeSheet ts){
 		String s = ts.toString();
 		String result = "";
@@ -209,7 +246,7 @@ public class TimeSheetIO extends TimeSheet {
 		}
 		return result;
 	}
-	
+
 	/** Returns the substring of the parameter str between the beginning of the parameter var and the end of the string. To be used with toString method of TimeSheet or TimeSheetEvent.
 	 * @param str - The full string.
 	 * @param var - The value that should be loaded.
@@ -224,7 +261,7 @@ public class TimeSheetIO extends TimeSheet {
 		result = str.substring(index, str.indexOf(END_OF_LINE));
 		return result;
 	}
-	
+
 	/** Returns the substring of the parameter str between varToGet and nextVar. To be used with toString method of TimeSheet or TimeSheetEvent.
 	 * @param str - The full string.
 	 * @param varToGet - The value to be loaded.
@@ -241,7 +278,7 @@ public class TimeSheetIO extends TimeSheet {
 		result = str.substring(index, stop);
 		return result;
 	}
-	
+
 	public static void save(String fn, String w){
 		writeToFile(fn, "");
 		writeToFile(fn, w);

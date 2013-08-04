@@ -37,8 +37,6 @@ import com.magician.TimeSheet.TimeSheet;
 import com.magician.TimeSheet.TimeSheetEvent;
 import com.magician.TimeSheet.TimeSheetIO;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -58,11 +56,10 @@ public class TimeSheetGUI {
 	private JOptionPane saveOption = new JOptionPane("Would you like to save?", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION);
 	private JDialog saveDialog = saveOption.createDialog(frame, "Save?");
 	private static final Object[] EXPORT_OPTIONS = {"Text file (.txt)", "Excel file (.xls)"};
-	private ImageIcon icon = new ImageIcon((System.getProperty("user.home") + "/Documents/Source Code/TimeSheet/Icon.png"), "Icon");
-	private JOptionPane exportOption = new JOptionPane("Please choose a format to export in:", JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION, icon, EXPORT_OPTIONS);
-	private JDialog exportDialog = exportOption.createDialog(frame, "Export as...");
+	//private JOptionPane exportOption = new JOptionPane("Please choose a format to export in:", JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION, icon, EXPORT_OPTIONS);
+	//private JDialog exportDialog = exportOption.createDialog(frame, "Export as...");
 	private JFileChooser fc = new JFileChooser();
-	private static String directory;
+	//private static String directory;
 	protected static Font font;
 	private static String system;
 	private static boolean bTracking = false;
@@ -96,13 +93,9 @@ public class TimeSheetGUI {
 		switch (system){
 		case "windows":
 			font = new Font("Segoe UI", Font.PLAIN, 14);
-			directory = System.getProperty("user.home") + System.getProperty("file.separator" + 
-						"My Documents" + System.getProperty("file.separator") + "MagicTS");
 			break;
 		case "mac":
 			font = new Font("Lucida Grande", Font.PLAIN, 14);
-			directory = System.getProperty("user.home") + System.getProperty("file.separator" + 
-					"My Documents" + System.getProperty("file.separator") + "MagicTS");
 			break;
 		case "ubuntu":
 			font = new Font("Ubuntu", Font.PLAIN, 14);
@@ -118,6 +111,7 @@ public class TimeSheetGUI {
 	 */
 	public static void main(String[] args) {
 		doPlatformConfiguration();
+		TimeSheetIO.setDefaultProperties();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -455,12 +449,14 @@ public class TimeSheetGUI {
 			System.out.println("txtfile");
 			File f = new File(TimeSheetIO.getSaveLocation() + System.getProperty("file.separator") + "ajdkf;ajdf");
 			//TODO if isDirectory export, else...in that order.
-			if(!(f.isDirectory())){
-				System.out.println("Potato");
-				doExportOptions(e);
+			if(f.isDirectory()){
+				TimeSheetIO.save(TimeSheetIO.getSaveLocation() + "Test.txt", TimeSheetIO.loadAndFormatForExport(ts));
 			}
-			System.out.println("jellkljl;jl;");
-			TimeSheetIO.save(TimeSheetIO.getSaveLocation() + "Test.txt", TimeSheetIO.loadAndFormatForExport(ts));
+			else{
+				JOptionPane.showMessageDialog(frame, "The path set in your Export Options is not valid.", "Path not valid!", JOptionPane.WARNING_MESSAGE);
+				doExportOptions(e);
+				JOptionPane.showMessageDialog(frame, "Please try exporting again after your path has been set", "Try again", JOptionPane.INFORMATION_MESSAGE);
+			}
 			//TODO implement
 		}
 		else if (option == "Excel file (.xls)"){
@@ -470,8 +466,8 @@ public class TimeSheetGUI {
 	}
 	
 	private void doExportOptions(ActionEvent e){
-		ExportOptionsPane exportOptions = new ExportOptionsPane();
-		exportOptions.setVisible(true);
+		PreferencesPane preferences = new PreferencesPane();
+		preferences.setVisible(true);
 	}
 
 	private void doHelp(ActionEvent e){
