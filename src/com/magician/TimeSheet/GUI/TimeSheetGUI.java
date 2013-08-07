@@ -111,7 +111,9 @@ public class TimeSheetGUI {
 	 */
 	public static void main(String[] args) {
 		doPlatformConfiguration();
-		TimeSheetIO.setDefaultProperties();
+		//TODO remove setDefault?
+		//TimeSheetIO.setDefaultProperties();
+		TimeSheetIO.loadAndSetProperties();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

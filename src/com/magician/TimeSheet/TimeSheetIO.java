@@ -44,17 +44,22 @@ public class TimeSheetIO extends TimeSheet {
 	private static final String USER_HOME = System.getProperty("user.home");
 	private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 	private static final String TEMP_SAVE = USER_HOME + "/Documents/Source Code/TimeSheet/temp.txt";
-	private static String SAVE_LOCATION = USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR;
+	//private static String SAVE_LOCATION = USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR;
+	private static String SAVE_LOCATION;
 	private static Properties defaultProperties;
 	private static Properties appProperties;
 	
-	public static void loadProperties(){
+	public static void loadAndSetProperties(){
 		try{
+			//TODO debug
 			defaultProperties.load(TimeSheetIO.class.getResourceAsStream("defaultconfig.properties"));
+			appProperties.load(TimeSheetIO.class.getResourceAsStream("config.properties"));
 		}
 		catch(IOException e){
 			e.printStackTrace();
 		}
+		
+		SAVE_LOCATION = appProperties.getProperty("saveLocation");
 	}
 
 	public static void setProperty(String key, String value){
@@ -67,11 +72,15 @@ public class TimeSheetIO extends TimeSheet {
 
 		try{
 			defaultProperties.setProperty("isSet", "yes");
-			defaultProperties.setProperty("userHome", System.getProperty("user.home"));
-			defaultProperties.setProperty("fileSeparator", System.getProperty("file.separator"));
+			//defaultProperties.setProperty("userHome", System.getProperty("user.home"));
+			//defaultProperties.setProperty("fileSeparator", System.getProperty("file.separator"));
 			defaultProperties.setProperty("saveLocation", USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR);
 
 			defaultProperties.store(new FileOutputStream("defaultconfig.properties"), null);
+			
+			appProperties = defaultProperties;
+			
+			appProperties.store(new FileOutputStream("config.properties"), null);
 		}
 
 		catch(IOException e){

@@ -59,11 +59,11 @@ public class PreferencesPane extends JFrame {
 		TimeSheetGUI.setTextAreaProperties(txtrPath);
 		txtrPath.setText(TimeSheetIO.getSaveLocation());
 		
-		JButton btnEdit = new JButton("Edit");
-		btnEdit.addActionListener(new ActionListener(){
+		JButton btnEditPath = new JButton("Edit");
+		btnEditPath.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				doEdit(e);
+				doEditPath(e);
 			}
 		});
 		
@@ -76,7 +76,7 @@ public class PreferencesPane extends JFrame {
 					.addGap(18)
 					.addComponent(txtrPath, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
 					.addGap(18)
-					.addComponent(btnEdit)
+					.addComponent(btnEditPath)
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -85,13 +85,13 @@ public class PreferencesPane extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtrCurrentPath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(txtrPath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnEdit))
+						.addComponent(btnEditPath))
 					.addContainerGap(95, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
 	
-	private void doEdit(ActionEvent e){
+	private void doEditPath(ActionEvent e){
 		int returnVal;
 		File file;
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -101,6 +101,7 @@ public class PreferencesPane extends JFrame {
 		if (returnVal == JFileChooser.APPROVE_OPTION){
 			file = fc.getSelectedFile();
 			TimeSheetIO.setSaveLocation(file.getPath());
+			TimeSheetIO.setProperty("saveLocation", file.getPath());
 			txtrPath.setText(TimeSheetIO.getSaveLocation());
 		}
 	}
