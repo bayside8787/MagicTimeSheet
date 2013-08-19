@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class TimeSheetIO extends TimeSheet {
@@ -46,20 +47,24 @@ public class TimeSheetIO extends TimeSheet {
 	private static final String TEMP_SAVE = USER_HOME + "/Documents/Source Code/TimeSheet/temp.txt";
 	//private static String SAVE_LOCATION = USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR;
 	private static String SAVE_LOCATION;
-	private static Properties defaultProperties;
-	private static Properties appProperties;
+	private static Properties defaultProperties = new Properties();
+	private static Properties appProperties = new Properties();
 	
 	public static void loadAndSetProperties(){
 		try{
 			//TODO debug
-			defaultProperties.load(TimeSheetIO.class.getResourceAsStream("defaultconfig.properties"));
-			appProperties.load(TimeSheetIO.class.getResourceAsStream("config.properties"));
+			//File defaultConfigFile = new File("defaultconfig.properties");
+			File configFile = new File("config.properties");
+			//InputStream defaultInput = new FileInputStream(defaultConfigFile);
+			InputStream input = new FileInputStream(configFile);
+			//defaultProperties.load(defaultInput);
+			appProperties.load(input);
 		}
 		catch(IOException e){
-			e.printStackTrace();
+			
 		}
 		
-		SAVE_LOCATION = appProperties.getProperty("saveLocation");
+		SAVE_LOCATION = appProperties.getProperty("saveLocation", USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR);
 	}
 
 	public static void setProperty(String key, String value){

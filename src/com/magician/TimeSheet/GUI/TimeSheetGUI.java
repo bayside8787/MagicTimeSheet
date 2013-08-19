@@ -48,6 +48,10 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import javax.swing.JPanel;
 
 public class TimeSheetGUI {
@@ -105,15 +109,20 @@ public class TimeSheetGUI {
 			break;
 		}
 	}
+	
+	protected static void doConfiguration(){
+		doPlatformConfiguration();
+		TimeSheetIO.loadAndSetProperties();
+	}
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		doPlatformConfiguration();
-		//TODO remove setDefault?
+		doConfiguration();
+		//TODO remove setDefault? && debug loading. See TimeSheetIO.java
 		//TimeSheetIO.setDefaultProperties();
-		TimeSheetIO.loadAndSetProperties();
+		//TimeSheetIO.loadAndSetProperties();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -128,8 +137,9 @@ public class TimeSheetGUI {
 
 	/**
 	 * Create the application.
+	 * @throws FileNotFoundException 
 	 */
-	public TimeSheetGUI() {
+	public TimeSheetGUI() throws FileNotFoundException {
 		initialize();
 	}
 
@@ -147,8 +157,9 @@ public class TimeSheetGUI {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws FileNotFoundException 
 	 */
-	private void initialize() {
+	private void initialize() throws FileNotFoundException {
 		frame = new JFrame();
 		//frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
