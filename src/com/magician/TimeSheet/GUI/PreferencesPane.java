@@ -34,6 +34,7 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 
 import com.magician.TimeSheet.TimeSheetIO;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class PreferencesPane extends JFrame {
 
@@ -50,15 +51,15 @@ public class PreferencesPane extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		
+
 		JTextArea txtrCurrentPath = new JTextArea();
 		TimeSheetGUI.setTextAreaProperties(txtrCurrentPath);
 		txtrCurrentPath.setText("Current Path:");
-		
+
 		txtrPath = new JTextArea();
 		TimeSheetGUI.setTextAreaProperties(txtrPath);
 		txtrPath.setText(TimeSheetIO.getSaveLocation());
-		
+
 		JButton btnEditPath = new JButton("Edit");
 		btnEditPath.addActionListener(new ActionListener(){
 			@Override
@@ -66,31 +67,43 @@ public class PreferencesPane extends JFrame {
 				doEditPath(e);
 			}
 		});
-		
+
+		JButton btnRestoreDefaults = new JButton("Restore Defaults");
+		btnEditPath.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				doRestoreDefaults(e);
+			}
+		});
+
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(txtrCurrentPath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(txtrPath, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-					.addGap(18)
-					.addComponent(btnEditPath)
-					.addContainerGap())
-		);
+						.addContainerGap()
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(txtrCurrentPath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addComponent(txtrPath, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+										.addGap(18)
+										.addComponent(btnEditPath)
+										.addContainerGap())
+										.addComponent(btnRestoreDefaults, Alignment.TRAILING)))
+				);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtrCurrentPath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtrPath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnEditPath))
-					.addContainerGap(95, Short.MAX_VALUE))
-		);
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(txtrCurrentPath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(txtrPath, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnEditPath))
+								.addPreferredGap(ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+								.addComponent(btnRestoreDefaults))
+				);
 		contentPane.setLayout(gl_contentPane);
 	}
-	
+
 	private void doEditPath(ActionEvent e){
 		int returnVal;
 		File file;
@@ -104,5 +117,9 @@ public class PreferencesPane extends JFrame {
 			TimeSheetIO.setProperty("saveLocation", file.getPath());
 			txtrPath.setText(TimeSheetIO.getSaveLocation());
 		}
+	}
+
+	private void doRestoreDefaults(ActionEvent e){
+		TimeSheetIO.loadAndSetDefaultProperties();
 	}
 }

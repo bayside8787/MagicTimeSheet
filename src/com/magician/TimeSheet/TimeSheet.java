@@ -34,11 +34,11 @@ public class TimeSheet {
 	private int endWeekDate = 0;
 
 	public TimeSheet(){
-		timeSheet = new ArrayList();
+		timeSheet = new ArrayList<TimeSheetEvent>();
 	}
 
 	public TimeSheet(String nm){
-		timeSheet = new ArrayList();
+		timeSheet = new ArrayList<TimeSheetEvent>();
 		name = nm;
 	}
 

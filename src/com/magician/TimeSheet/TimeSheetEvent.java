@@ -33,14 +33,12 @@ public class TimeSheetEvent {
 	private int month = 0;
 	private int year = 0;
 	private String activity;
-	private int id;
 	
 	/** Constructs a TimeSheet with no activity or date.
 	 * 
 	 */
 	public TimeSheetEvent(){
 		activity = "";
-		id = 0;
 	}
 	
 	/** Constructs a TimeSheet with an activity but no ID.
@@ -48,7 +46,6 @@ public class TimeSheetEvent {
 	 */
 	public TimeSheetEvent(String act){
 		activity = act;
-		id = 0;
 	}
 	
 	/** Constructs a TimeSheet with an activity but no ID.
@@ -58,7 +55,6 @@ public class TimeSheetEvent {
 	 */
 	public TimeSheetEvent(String act, int ID){
 		activity = act;
-		id = 0;
 	}
 	
 //	/** Constructs a TimeSheet with a date but no name.

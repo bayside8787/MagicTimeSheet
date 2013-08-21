@@ -27,7 +27,6 @@ import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Properties;
@@ -42,30 +41,39 @@ public class TimeSheetIO extends TimeSheet {
 	private static final String YEAR = "year";
 	private static final String ACTIVITY = "activity";
 	private static final String END_OF_LINE = "]";
-	private String fileVal = null;
+	//private String fileVal = null;
 	private static final String USER_HOME = System.getProperty("user.home");
 	private static final String FILE_SEPARATOR = System.getProperty("file.separator");
 	private static final String TEMP_SAVE = USER_HOME + "/Documents/Source Code/TimeSheet/temp.txt";
 	//private static String SAVE_LOCATION = USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR;
 	private static String SAVE_LOCATION;
-	private static Properties defaultProperties = new Properties();
+	private static Properties defaultProperties;
 	private static Properties appProperties = new Properties();
-	
+
 	public static void loadAndSetProperties(){
 		try{
-			//TODO debug
-			//File defaultConfigFile = new File("defaultconfig.properties");
 			File configFile = new File("config.properties");
-			//InputStream defaultInput = new FileInputStream(defaultConfigFile);
 			InputStream input = new FileInputStream(configFile);
-			//defaultProperties.load(defaultInput);
 			appProperties.load(input);
+			SAVE_LOCATION = appProperties.getProperty("saveLocation", USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR);
 		}
 		catch(Exception e){
 			generateErrorLog(e);
 		}
-		
-		SAVE_LOCATION = appProperties.getProperty("saveLocation", USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR);
+	}
+
+	public static void loadAndSetDefaultProperties(){
+		try{
+			defaultProperties = new Properties();
+			File defaultConfigFile = new File("defaultconfig.properties");
+			InputStream defaultInput = new FileInputStream(defaultConfigFile);
+			defaultProperties.load(defaultInput);
+			appProperties = defaultProperties;
+			SAVE_LOCATION = appProperties.getProperty("saveLocation", USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR);
+		}
+		catch(Exception e){
+			generateErrorLog(e);
+		}
 	}
 
 	public static void setProperty(String key, String value){
@@ -83,14 +91,23 @@ public class TimeSheetIO extends TimeSheet {
 			defaultProperties.setProperty("saveLocation", USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR);
 
 			defaultProperties.store(new FileOutputStream("defaultconfig.properties"), null);
-			
+
 			appProperties = defaultProperties;
-			
+
 			appProperties.store(new FileOutputStream("config.properties"), null);
 		}
 
-		catch(IOException e){
-			e.printStackTrace();
+		catch(Exception e){
+			TimeSheetIO.generateErrorLog(e);
+		}
+	}
+
+	public static void storeProperties(){
+		try{
+			appProperties.store(new FileOutputStream("config.properties"), null);
+		}
+		catch(Exception e){
+			TimeSheetIO.generateErrorLog(e);
 		}
 	}
 
@@ -106,7 +123,7 @@ public class TimeSheetIO extends TimeSheet {
 			}
 		}
 		catch(Exception e){
-			e.printStackTrace();
+			TimeSheetIO.generateErrorLog(e);
 		}
 		return false;
 	}
@@ -134,7 +151,7 @@ public class TimeSheetIO extends TimeSheet {
 		} 
 
 		catch (Exception e){
-			e.printStackTrace();
+			TimeSheetIO.generateErrorLog(e);
 		} 
 
 		finally{
@@ -145,7 +162,7 @@ public class TimeSheetIO extends TimeSheet {
 				}
 
 				catch (Exception e) {
-					e.printStackTrace();
+					TimeSheetIO.generateErrorLog(e);
 				}
 			}
 		}
@@ -172,7 +189,7 @@ public class TimeSheetIO extends TimeSheet {
 		} 
 
 		catch (Exception e){
-			e.printStackTrace();
+			TimeSheetIO.generateErrorLog(e);
 		} 
 
 		finally{
@@ -182,7 +199,7 @@ public class TimeSheetIO extends TimeSheet {
 				} 
 
 				catch (Exception e) {
-					e.printStackTrace();
+					TimeSheetIO.generateErrorLog(e);
 				}
 			}
 		}
@@ -298,7 +315,7 @@ public class TimeSheetIO extends TimeSheet {
 		writeToFile(fn, "");
 		writeToFile(fn, w);
 	}
-	
+
 	public static void generateErrorLog(Exception e){
 		try {
 			File file = new File("errorlog.txt");
@@ -310,6 +327,6 @@ public class TimeSheetIO extends TimeSheet {
 		catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		
+
 	}
 }
