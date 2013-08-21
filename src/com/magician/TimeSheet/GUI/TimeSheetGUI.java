@@ -459,22 +459,29 @@ public class TimeSheetGUI {
 		String option;
 		option = (String)JOptionPane.showInputDialog(frame, "Please choose a format to export in:", "Export as...", JOptionPane.QUESTION_MESSAGE, null, EXPORT_OPTIONS, EXPORT_OPTIONS[0]);
 		if (option == "Text file (.txt)"){
-			System.out.println("txtfile");
-			File f = new File(TimeSheetIO.getSaveLocation() + System.getProperty("file.separator") + "ajdkf;ajdf");
+			File f = new File(TimeSheetIO.getSaveLocation());
 			//TODO if isDirectory export, else...in that order.
 			if(f.isDirectory()){
 				TimeSheetIO.save(TimeSheetIO.getSaveLocation() + "Test.txt", TimeSheetIO.loadAndFormatForExport(ts));
+				JOptionPane.showMessageDialog(frame, "Export successful!", "Success!", JOptionPane.INFORMATION_MESSAGE);
 			}
 			else{
 				JOptionPane.showMessageDialog(frame, "The path set in your Export Options is not valid.", "Path not valid!", JOptionPane.WARNING_MESSAGE);
 				doExportOptions(e);
 				JOptionPane.showMessageDialog(frame, "Please try exporting again after your path has been set", "Try again", JOptionPane.INFORMATION_MESSAGE);
 			}
-			//TODO implement
 		}
 		else if (option == "Excel file (.xls)"){
-			System.out.println("excelfile");
-			//TODO implement
+			File f = new File(TimeSheetIO.getSaveLocation());
+			if(f.isDirectory()){
+				TimeSheetIO.save(TimeSheetIO.getSaveLocation() + "Test.xls", TimeSheetIO.loadAndFormatForExport(ts));
+				JOptionPane.showMessageDialog(frame, "Export successful!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+			}
+			else{
+				JOptionPane.showMessageDialog(frame, "The path set in your Export Options is not valid.", "Path not valid!", JOptionPane.WARNING_MESSAGE);
+				doExportOptions(e);
+				JOptionPane.showMessageDialog(frame, "Please try exporting again after your path has been set", "Try again", JOptionPane.INFORMATION_MESSAGE);
+			}
 		}
 	}
 	

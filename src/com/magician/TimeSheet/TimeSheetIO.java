@@ -29,6 +29,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.Properties;
 
 public class TimeSheetIO extends TimeSheet {
@@ -60,8 +61,8 @@ public class TimeSheetIO extends TimeSheet {
 			//defaultProperties.load(defaultInput);
 			appProperties.load(input);
 		}
-		catch(IOException e){
-			
+		catch(Exception e){
+			generateErrorLog(e);
 		}
 		
 		SAVE_LOCATION = appProperties.getProperty("saveLocation", USER_HOME + FILE_SEPARATOR + "Documents" + FILE_SEPARATOR + "TimeSheet" + FILE_SEPARATOR);
@@ -296,5 +297,19 @@ public class TimeSheetIO extends TimeSheet {
 	public static void save(String fn, String w){
 		writeToFile(fn, "");
 		writeToFile(fn, w);
+	}
+	
+	public static void generateErrorLog(Exception e){
+		try {
+			File file = new File("errorlog.txt");
+			file.createNewFile();
+			PrintWriter pw = new PrintWriter(file);
+			e.printStackTrace(pw);
+			pw.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
 	}
 }
