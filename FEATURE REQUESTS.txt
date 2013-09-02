@@ -1,0 +1,24 @@
+This document is for items that are officially on the roadmap for development. It is broken into 3 catagories - next release, soon(tm), and distant - which are further subdivided into developer features and community requests. To request a feature, please file an issue on Github.
+
+*****NEXT RELEASE*****
+
+Coming late 2013
+
+---Developer---
+
+---Community---
+
+*****SOON(tm)*****
+
+---Developer---
+
+---Community---
+
+*****DISTANT*****
+
+---Developer---
+
+---Community---
+
+
+
