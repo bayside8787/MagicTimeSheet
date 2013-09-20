@@ -466,7 +466,12 @@ public class TimeSheetGUI {
 		returnVal = fc.showSaveDialog(frame);
 		if(returnVal == JFileChooser.APPROVE_OPTION){
 			File file = fc.getSelectedFile();
+			if (file.getPath().substring(file.getPath().length() - 5) == ".txt"){
 			TimeSheetIO.save(file.getPath(), ts.toString());
+			}
+			else{
+				TimeSheetIO.save(file.getPath() + ".txt", ts.toString());
+			}
 		}
 		bSaved = true;
 	}
