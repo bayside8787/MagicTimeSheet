@@ -1,6 +1,6 @@
 /** COPYRIGHT 2013 DANIEL BRADNER
  * 
- *  This file is part of TimeSheet (Name not final).
+ *  This file is part of Magic Time Sheet.
  *  
  *  TimeSheet is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -151,7 +151,7 @@ public class TimeSheetGUI {
 	 * @throws FileNotFoundException 
 	 */
 	private void initialize() throws FileNotFoundException {
-		frame = new JFrame();
+		frame = new JFrame("Magic Time Sheet");
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		//TODO Ask if user wants to save before exit.
 		frame.addWindowListener(new WindowAdapter() {
@@ -296,42 +296,43 @@ public class TimeSheetGUI {
 
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
-								.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(txtrActivity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(txtrTag, GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.RELATED, 18, GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnTrack))
-										.addGroup(groupLayout.createSequentialGroup()
-												.addComponent(txtrCurrentWeek, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(txtrWeekOf, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
-												.addComponent(txtrTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-												.addContainerGap())
-				);
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(txtrActivity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(txtrTag, GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 18, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnTrack))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(txtrCurrentWeek, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(txtrWeekOf, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+							.addComponent(txtrTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
+					.addContainerGap())
+		);
 		groupLayout.setVerticalGroup(
-				groupLayout.createParallelGroup(Alignment.TRAILING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
-						.addGap(18)
+					.addGap(6)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(txtrTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtrCurrentWeek, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtrWeekOf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(txtrTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtrCurrentWeek, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtrWeekOf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-										.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(txtrActivity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(txtrTag, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-												.addComponent(btnTrack))
-												.addContainerGap())
-				);
+							.addComponent(txtrActivity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtrTag, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnTrack))
+					.addContainerGap())
+		);
 
 		txtrDates = new JTextArea();
 		setTextAreaProperties(txtrDates);
@@ -386,7 +387,7 @@ public class TimeSheetGUI {
 		else{
 			ts.clear();
 		}
-
+		updateUI();
 	}
 
 	private void doOpen(ActionEvent e) {
@@ -397,6 +398,7 @@ public class TimeSheetGUI {
 			if(bSaved){
 				returnVal = fc.showOpenDialog(frame);
 				if(returnVal == JFileChooser.APPROVE_OPTION){
+					ts.clear();
 					File file = fc.getSelectedFile();
 					TimeSheetIO.load(ts, file.getPath());
 				}
@@ -409,6 +411,7 @@ public class TimeSheetGUI {
 					doSave(e);
 					returnVal = fc.showOpenDialog(frame);
 					if(returnVal == JFileChooser.APPROVE_OPTION){
+						ts.clear();
 						File file = fc.getSelectedFile();
 						TimeSheetIO.load(ts, file.getPath());
 					}
@@ -416,11 +419,13 @@ public class TimeSheetGUI {
 				else if(option == JOptionPane.NO_OPTION){
 					returnVal = fc.showOpenDialog(frame);
 					if(returnVal == JFileChooser.APPROVE_OPTION){
+						ts.clear();
 						File file = fc.getSelectedFile();
 						TimeSheetIO.load(ts, file.getPath());
 					}
 				}
 			}
+			updateUI();
 		}
 		else{
 			returnVal = fc.showOpenDialog(frame);
@@ -456,7 +461,12 @@ public class TimeSheetGUI {
 		returnVal = fc.showSaveDialog(frame);
 		if(returnVal == JFileChooser.APPROVE_OPTION){
 			File file = fc.getSelectedFile();
-			TimeSheetIO.save(file.getPath(), ts.toString());
+			if (file.getPath().substring(file.getPath().length() - 5) == ".txt"){
+				TimeSheetIO.save(file.getPath(), ts.toString());
+			}
+			else{
+				TimeSheetIO.save(file.getPath() + ".txt", ts.toString());
+			}
 		}
 		bSaved = true;
 	}
@@ -467,7 +477,7 @@ public class TimeSheetGUI {
 		if(returnVal == JFileChooser.APPROVE_OPTION){
 			File file = fc.getSelectedFile();
 			if (file.getPath().substring(file.getPath().length() - 5) == ".txt"){
-			TimeSheetIO.save(file.getPath(), ts.toString());
+				TimeSheetIO.save(file.getPath(), ts.toString());
 			}
 			else{
 				TimeSheetIO.save(file.getPath() + ".txt", ts.toString());
@@ -573,6 +583,7 @@ public class TimeSheetGUI {
 				System.exit(0);
 			}
 		}
+		System.exit(0);
 	}
 
 	public JFrame getFrame(){

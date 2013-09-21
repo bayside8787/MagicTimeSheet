@@ -1,6 +1,6 @@
 /** COPYRIGHT 2013 DANIEL BRADNER
  * 
- *  This file is part of TimeSheet (Name not final).
+ *  This file is part of Magic Time Sheet.
  *  
  *  TimeSheet is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -49,9 +49,9 @@ public class HelpFrame extends JFrame {
 		contentPane.add(textArea);
 		TimeSheetGUI.setTextAreaProperties(textArea);
 		textArea.setText("Sorry, no helptext is available yet, but a manual is in development!" +
-				"\nFor now please visit our wiki at http://www.sourceforge.net/p/magictimesheet/wiki/home" +
-				"\nIf you can't find what you need on the wiki, please submit a ticket on our SourceForge project page " +
-				"(souceforge.net/p/magictimesheet).");
+				"\nFor now please visit our wiki at http://github.com/bayside8787/MagicTimeSheet/wiki" +
+				"\nIf you can't find what you need on the wiki, please submit a ticket on our GitHub project page " +
+				"(github.com/bayside8787/MagicTimeSheet).");
 	}
 
 }

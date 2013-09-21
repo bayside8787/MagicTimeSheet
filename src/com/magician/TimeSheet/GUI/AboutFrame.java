@@ -1,6 +1,6 @@
 /** COPYRIGHT 2013 DANIEL BRADNER
  * 
- *  This file is part of TimeSheet (Name not final).
+ *  This file is part of Magic Time Sheet.
  *  
  *  TimeSheet is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ public class AboutFrame extends JFrame {
 		gbc_textArea.gridy = 0;
 		contentPane.add(textArea, gbc_textArea);
 		TimeSheetGUI.setTextAreaProperties(textArea);
-		textArea.setText("TimeSheet" + "\nVersion 0.10" + "\nCopyright (c) 2013 Daniel Bradner");
+		textArea.setText("Magic Time Sheet" + "\nVersion 0.10" + "\nCopyright (c) 2013 Daniel Bradner");
 	}
 
 }
