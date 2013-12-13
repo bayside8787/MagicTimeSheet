@@ -275,13 +275,16 @@ public class TimeSheetGUI {
 		txtrActivity.setText("Activity:");
 		setTextAreaProperties(txtrActivity);
 
-		txtrTag = new JTextArea();
+		txtrTag = new JTextArea(2, 0);
 		txtrTag.setText("Add tags, separated by commas");
 		txtrTag.setFont(TimeSheetGUI.font);
 		txtrTag.setLineWrap(true);
 		txtrTag.setWrapStyleWord(true);
 		txtrTag.setEditable(true);
 		txtrTag.setOpaque(true);
+		
+		JScrollPane txtrTagScrollPane = new JScrollPane(txtrTag);
+		//txtrTagScrollPane.
 
 		btnTrack = new JButton("Start Tracking");
 		btnTrack.addActionListener(new ActionListener(){
@@ -303,7 +306,7 @@ public class TimeSheetGUI {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(txtrActivity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtrTag, GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+							.addComponent(txtrTagScrollPane, GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED, 18, GroupLayout.PREFERRED_SIZE)
 							.addComponent(btnTrack))
 						.addGroup(groupLayout.createSequentialGroup()
@@ -329,7 +332,7 @@ public class TimeSheetGUI {
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 							.addComponent(txtrActivity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(txtrTag, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(txtrTagScrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addComponent(btnTrack))
 					.addContainerGap())
 		);
@@ -581,6 +584,9 @@ public class TimeSheetGUI {
 			else if(option == JOptionPane.NO_OPTION){
 				TimeSheetIO.storeProperties();
 				System.exit(0);
+			}
+			else if(option == JOptionPane.CANCEL_OPTION){
+				return;
 			}
 		}
 		System.exit(0);
