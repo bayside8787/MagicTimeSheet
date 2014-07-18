@@ -26,7 +26,7 @@ import java.util.TimeZone;
 
 public class TimeSheetEvent {
 
-	private int timeWorked = 0;
+	private int timeWorked = -1;
 	private double startTime = 0;
 	private double endTime = 0;
 	private int dayofMonth = 0;
@@ -98,6 +98,7 @@ public class TimeSheetEvent {
 	}
 	
 	protected int calculateTimeWorked(){
+		timeWorked = 0;
 		double tw = timeWorked + (((endTime - startTime) / 1000) / 60);
 		timeWorked = (int)Math.round(tw);
 		return timeWorked;

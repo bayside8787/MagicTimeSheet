@@ -52,6 +52,9 @@ import com.magician.TimeSheet.TimeSheetIO;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+// TODO add in price for the time worked, configurable with default. 
+// TODO add in notes function, for what was accomplished and what needs to be worked on. Feasibility study on templates.
+// TODO fork to second "higher demand" app that constantly updates the work time through use of a timer or infinite loop.
 public class TimeSheetGUI {
 
 	private JFrame frame;
@@ -495,6 +498,7 @@ public class TimeSheetGUI {
 		if (option == "Text file (.txt)"){
 			File f = new File(TimeSheetIO.getSaveLocation());
 			if(f.isDirectory()){
+				System.out.println(TimeSheetIO.getSaveLocation());
 				TimeSheetIO.save(TimeSheetIO.getSaveLocation() + "Test.txt", TimeSheetIO.loadAndFormatForExport(ts));
 				JOptionPane.showMessageDialog(frame, "Export successful!", "Success!", JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -562,11 +566,19 @@ public class TimeSheetGUI {
 	}
 
 	private void updateUI(){
-		txtrTime.setText(ts.totalTimeWorked() + " Minutes Worked");
-		txtrDates.setText("Dates" + "\n" + TimeSheetIO.loadDates(ts));
-		txtrActivities.setText("Activities" + "\n" + TimeSheetIO.loadActivities(ts));
-		txtrTimeWorked.setText("Time Worked" + "\n" + TimeSheetIO.loadTimesWorked(ts));
-		System.out.println("UPDATE UI-- " + ts.toString());
+		if (bTracking){
+			txtrTime.setText("Tracking...");
+			txtrDates.setText("Dates" + "\n" + TimeSheetIO.loadDates(ts));
+			txtrActivities.setText("Activities" + "\n" + TimeSheetIO.loadActivities(ts));
+			txtrTimeWorked.setText("Time Worked" + "\n" + TimeSheetIO.loadTimesWorked(ts));
+		}
+		else{
+			txtrTime.setText(ts.totalTimeWorked() + " Minutes Worked");
+			txtrDates.setText("Dates" + "\n" + TimeSheetIO.loadDates(ts));
+			txtrActivities.setText("Activities" + "\n" + TimeSheetIO.loadActivities(ts));
+			txtrTimeWorked.setText("Time Worked" + "\n" + TimeSheetIO.loadTimesWorked(ts));
+			System.out.println("UPDATE UI-- " + ts.toString());
+		}
 	}
 
 	private void onExit(WindowEvent e){

@@ -262,8 +262,14 @@ public class TimeSheetIO extends TimeSheet {
 		String s = ts.toString();
 		String result = "";
 		while(s.length() > END_OF_LINE.length()){
-			result = result + (loadValue(s, TIME_WORKED, START_TIME) + "\n");
-			s = s.substring(s.indexOf(END_OF_LINE) + 1);
+			if (Integer.parseInt(loadValue(s, TIME_WORKED, START_TIME)) == -1){
+				result = result + ("Time not yet calculated..." + "\n");
+				s = s.substring(s.indexOf(END_OF_LINE) + 1);
+			}
+			else{
+				result = result + (loadValue(s, TIME_WORKED, START_TIME) + "\n");
+				s = s.substring(s.indexOf(END_OF_LINE) + 1);
+			}
 		}
 		return result;
 	}
